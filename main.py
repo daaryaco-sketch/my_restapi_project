@@ -3,3 +3,4 @@ def sample_func():
 
 if __name__ == "__main__":
     sample_func()
+    print('sample text')

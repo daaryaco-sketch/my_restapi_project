@@ -1,7 +1,6 @@
 import auth_service
 from auth_service import AuthService
 from todo_service import TodoService
-from models import User
 
 class ApiSimulator:
     auth_service: AuthService

@@ -1,4 +1,3 @@
-from sqlalchemy import false
 from database import JsonDatabase
 from pathlib import Path
 from models import User, TodoItem

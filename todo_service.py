@@ -1,5 +1,4 @@
 from database import JsonDatabase
-from pathlib import Path
 from models import TodoItem
 from datetime import datetime
 
@@ -29,8 +28,8 @@ class TodoService:
         self.db.save_todos()
         return todo
     
-    def list_todos(self, user_id: int, title: str) -> list[TodoItem]:
-        return [todo for todo in self.db.todos if todo.user_id == user_id and todo.title == title]
+    def list_todos(self, user_id: int) -> list[TodoItem]:
+        return [todo for todo in self.db.todos if todo.user_id == user_id]
     
     def complete_todo(self, user_id: int, todo_id: int) -> bool:
         for todo in self.db.todos:

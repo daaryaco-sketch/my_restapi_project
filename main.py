@@ -17,23 +17,19 @@ if __name__ == "__main__":
         todoSrv = TodoService(db)
         api = ApiSimulator(authSrv, todoSrv)
 
-        user = api.post_register('reza029', '12345')
-        token = list(api.post_login('reza029', '12345').values())[0]
+        user = api.post_register('reza02', '12345')
+        token = list(api.post_login('reza02', '12345').values())[0]
 
         api.post_todo_create(token, "Programing")
         api.post_todo_create(token, "Designing")
         api.post_todo_create(token, "Creating")
 
-        list_dict_todos = api.get_todos(token)
-        for list_todo in list_dict_todos:
-            print({key:value for key,value in list_todo.items()})
+        print([todo for todo in api.get_todos(token)])
 
         api.post_todo_complete(token, 1)
         api.post_todo_delete(token, 1)
 
-        list_dict_todos = api.get_todos(token)
-        for list_todo in list_dict_todos:
-            print({key: value for key, value in list_todo.items()})
+        print([todo for todo in api.get_todos(token)])
 
         print(api.post_logout(token))
 

@@ -42,7 +42,7 @@ class AuthService:
                 session_token = f"{user.id}-{time.time()}"
                 self.sessions[session_token] = user.id
                 return session_token
-        return 'User not found.'
+        raise ValueError('Invalid username or password.')
     
     def logout(self, token: str) -> None:
         result = self.sessions.pop(token, None)

@@ -5,16 +5,16 @@ from api import ApiSimulator
 
 if __name__ == "__main__":
 
-    jsonDb = JsonDatabase("users.json", "todos.json")
+    db = JsonDatabase("users.json", "todos.json")
 
     try:
-        jsonDb.load_users()
-        jsonDb.load_todos()
+        db.load_users()
+        db.load_todos()
     except FileNotFoundError as e:
         print(e)
 
-    authSrv = AuthService(jsonDb)
-    todoSrv = TodoService(jsonDb)
+    authSrv = AuthService(db)
+    todoSrv = TodoService(db)
     api = ApiSimulator(authSrv, todoSrv)
 
     user = api.post_register('reza029', '12345')

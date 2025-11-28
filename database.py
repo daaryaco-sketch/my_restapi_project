@@ -9,13 +9,16 @@ class JsonDatabase:
     users: list[User]
     todos: list[TodoItem]
 
-    def __init__(self, users_file: Path, todos_file: Path):
+    def __init__(self, users_file, todos_file):
         self.users_file = users_file
         self.todos_file = todos_file
+        self.users = []
+        self.todos = []
 
     def load_users(self) -> None:
-        if not Path.exists(self.users_file):
-            raise ValueError('Path does not exists.')
+        usr_file = Path(self.users_file)
+        if usr_file.exists():
+            raise FileNotFoundError('File does not exists.')
         with open(self.users_file, 'r') as file:
             json_users = json.load(file)
             self.users = [User(
@@ -26,8 +29,6 @@ class JsonDatabase:
             ) for key, value in json_users.items()]
 
     def save_users(self) -> None:
-        if not Path.exists(self.users_file):
-            raise ValueError('Path does not exists.')
         dict_users = {user.id:{
                             'id': user.id,
                             'username': user.username,
@@ -38,8 +39,9 @@ class JsonDatabase:
             json.dump(dict_users, file, indent=4)
 
     def load_todos(self) -> None:
-        if not Path.exists(self.todos_file):
-            raise ValueError('Path does not exists')
+        todo_file = Path(self.todos_file)
+        if todo_file.exists():
+            raise FileNotFoundError('Path does not exists')
         with open(self.todos_file, 'r') as file:
             dict_todos = json.load(file)
             self.todos = [TodoItem(
@@ -51,8 +53,6 @@ class JsonDatabase:
             ) for key, value in dict_todos.items()]
     
     def save_todos(self) -> None:
-        if not Path.exists(self.todos_file):
-            raise ValueError('Path does not exists.')
         dict_todos = {todo.id:{
                 'id': todo.id,
                 'user_id': todo.user_id,

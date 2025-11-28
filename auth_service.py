@@ -1,14 +1,16 @@
 from database import JsonDatabase
 from models import User
-from datetime import datetime, time
+from datetime import datetime
+import time
 
 class AuthService:
     db: JsonDatabase
     sessions: dict[str, int]
     _user_counter = 0
 
-    def __init__(self):
-        pass
+    def __init__(self, db: JsonDatabase):
+        self.db = db
+        self.sessions = {}
 
     def register(self, username: str, password: str) -> User:
         if username in ([user.username for user in self.db.users]):
@@ -19,6 +21,7 @@ class AuthService:
             username=username,
             password_hash=password,
             created_at=datetime.today())
+
         self.db.users.append(user)
         self.db.save_users()
         return user

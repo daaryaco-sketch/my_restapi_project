@@ -6,8 +6,9 @@ class ApiSimulator:
     auth_service: AuthService
     todo_service: TodoService
     
-    def __init__(self):
-        pass
+    def __init__(self, auth_service: AuthService, todo_service: TodoService):
+        self.auth_service = auth_service
+        self.todo_service = todo_service
 
     '''
     def require_auth(func):
@@ -55,7 +56,7 @@ class ApiSimulator:
         user = self.auth_service.get_user_by_token(token)
         if user is None:
             return [{"error": "Unauthorized"}]
-        todos = self.todo_service.list_todos(user.id)
+        todos = self.todo_service.db.todos
         return [{todo.id:{
             'id': todo.id,
             'user_id': todo.user_id,

@@ -1,0 +1,48 @@
+from database import JsonDatabase
+from pathlib import Path
+from models import User, TodoItem
+from datetime import datetime, time
+
+class AuthService:
+    db: JsonDatabase
+    sessions: dict[str, int]
+    _user_counter = 0
+
+    def __init__(self, users_file: Path, todos_file: Path):
+        self.db.users_file = users_file
+        self.db.todos_file = todos_file
+
+    def register(self, username: str, password: str) -> User:
+        if username in ([user.username for user in self.db.users]):
+            raise ValueError('This username is exists.')
+        self._user_counter += 1
+        user = User(
+            id=self._user_counter,
+            username=username,
+            password_hash=password,
+            created_at=datetime.today())
+        self.db.users.append(user)
+        self.db.save_users()
+        return user
+
+    def login(self, username: str, password: str) -> str:
+        for user in self.db.users:
+            if user.username == username and user.password_hash == password:
+                session_token = f"{user.id}-{time.microsecond}"
+                self.sessions[session_token] = user.id
+                return session_token
+        return 'User not found.'
+    
+    def logout(self, token: str) -> None:
+        result = self.sessions.pop(token, None)
+        if result is None:
+            raise ValueError('Invalid token.')
+
+    def get_user_by_token(self, token: str) -> User | None:
+        user_id = self.sessions.get(token, None)
+        if user_id is None:
+            raise ValueError('Invalid token.')
+        for user in self.db.users:
+            if user.id == user_id:
+                return user
+        return None

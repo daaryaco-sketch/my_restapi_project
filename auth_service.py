@@ -51,7 +51,7 @@ class AuthService:
 
     def get_user_by_token(self, token: str) -> User | None:
         user_id = self.sessions.get(token, None)
-        if not user_id is None:
+        if user_id is not None:
             for user in self.db.users:
                 if user.id == user_id:
                     return user

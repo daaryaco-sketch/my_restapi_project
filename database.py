@@ -36,3 +36,30 @@ class JsonDatabase:
             }for user in self.users}
         with open(self.users_file, "w") as file:
             json.dump(dict_users, file, indent=4)
+
+    def load_todos(self) -> None:
+        if not Path.exists(self.todos_file):
+            raise ValueError('Path does not exists')
+        with open(self.todos_file, 'r') as file:
+            dict_todos = json.load(file)
+            self.todos = [TodoItem(
+                                    id = int(value['id']),
+                                    user_id = int(value['user_id']),
+                                    title = value['title'],
+                                    completed = bool(value['completed']),
+                                    created_at = datetime.fromisoformat(value['created_at'])
+            ) for key, value in dict_todos.items()]
+    
+    def save_todos(self) -> None:
+        if not Path.exists(self.todos_file):
+            raise ValueError('Path does not exists.')
+        dict_todos = {todo.id:{
+                'id': todo.id,
+                'user_id': todo.user_id,
+                'title': todo.title,
+                'completed': todo.completed,
+                'created_at': str(todo.created_at)
+        }for todo in self.todos}
+        with open(self.todos_file, 'w') as file:
+            json.dump(dict_todos, file, indent=4)
+    

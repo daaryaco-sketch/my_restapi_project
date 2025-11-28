@@ -26,7 +26,7 @@ class AuthService:
     def login(self, username: str, password: str) -> str:
         for user in self.db.users:
             if user.username == username and user.password_hash == password:
-                session_token = f"{user.id}-{time.microsecond}"
+                session_token = f"{user.id}-{time.time()}"
                 self.sessions[session_token] = user.id
                 return session_token
         return 'User not found.'

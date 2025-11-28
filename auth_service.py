@@ -24,6 +24,11 @@ class AuthService:
         return user
 
     def login(self, username: str, password: str) -> str:
+        """
+        :param username: name of the user
+        :param password: password of the user
+        :return: session token of the user
+        """
         for user in self.db.users:
             if user.username == username and user.password_hash == password:
                 session_token = f"{user.id}-{time.time()}"

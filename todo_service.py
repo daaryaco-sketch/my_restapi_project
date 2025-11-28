@@ -28,7 +28,14 @@ class TodoService:
         for todo in self.db.todos:
             if todo.user_id == user_id and todo.id == todo_id:
                 todo.completed = True  # mark task as completed
+                self.db.save_todos()
                 return True
         return False
     
-    
+    def delete_todo(self, user_id: int, todo_id: int) -> bool:
+        for todo in self.db.todos:
+            if todo.user_id == user_id and todo.id == todo_id:
+                self.db.todos.remove(todo)
+                self.db.save_todos()
+                return True
+        return False

@@ -11,6 +11,7 @@ class AuthService:
     def __init__(self, users_file: Path, todos_file: Path):
         self.db.users_file = users_file
         self.db.todos_file = todos_file
+        self.db.__init__(users_file, todos_file)
 
     def register(self, username: str, password: str) -> User:
         if username in ([user.username for user in self.db.users]):

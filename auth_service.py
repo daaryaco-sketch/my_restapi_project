@@ -1,5 +1,5 @@
 from database import JsonDatabase
-from models import User, TodoItem
+from models import User
 from datetime import datetime, time
 
 class AuthService:

@@ -51,9 +51,8 @@ class AuthService:
 
     def get_user_by_token(self, token: str) -> User | None:
         user_id = self.sessions.get(token, None)
-        if user_id is None:
-            raise ValueError('Invalid token.')
-        for user in self.db.users:
-            if user.id == user_id:
-                return user
+        if not user_id is None:
+            for user in self.db.users:
+                if user.id == user_id:
+                    return user
         return None

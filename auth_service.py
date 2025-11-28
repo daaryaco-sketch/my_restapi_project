@@ -22,7 +22,7 @@ class AuthService:
             raise ValueError('This username already exists.')
         AuthService._user_counter += 1
         user = User(
-            id=self._user_counter,
+            id=AuthService._user_counter,
             username=username,
             password_hash=password,
             created_at=datetime.today())

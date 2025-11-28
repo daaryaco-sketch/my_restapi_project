@@ -9,13 +9,13 @@ class ApiSimulator:
         self.auth_service = auth_service
         self.todo_service = todo_service
 
-    '''
     def require_auth(func):
-        def wrapper(self, token = None, *args, **kwargs):
+        def wrapper(self, token, *args, **kwargs):
             user = self.auth_service.get_user_by_token(token)
-            func(self, user, *args, **kwargs)
+            if user is None:
+                return {"error": "Unauthorized"}
+            return func(self, user, *args, **kwargs)
         return wrapper
-    '''
 
     def post_register(self, username: str, password: str) -> dict:
         user = self.auth_service.register(username, password)
@@ -37,10 +37,8 @@ class ApiSimulator:
         self.auth_service.logout(token)
         return {"success": True}
 
-    def post_todo_create(self, token: str, title: str) -> dict:
-        user = self.auth_service.get_user_by_token(token)
-        if user is None:
-            return {"error": "Unauthorized"}
+    @require_auth
+    def post_todo_create(self, user, title) -> dict:
         todo = self.todo_service.create_todo(user.id, title)
         self.todo_service.db.save_todos()
         return {todo.id:{
@@ -51,10 +49,8 @@ class ApiSimulator:
             'created_at': todo.created_at,
         }}
 
-    def get_todos(self, token: str) -> list[dict]:
-        user = self.auth_service.get_user_by_token(token)
-        if user is None:
-            return [{"error": "Unauthorized"}]
+    @require_auth
+    def get_todos(self, user) -> list[dict]:
         todos = self.todo_service.list_todos(user.id)
         return [{
                 'id': todo.id,
@@ -64,10 +60,8 @@ class ApiSimulator:
                 'created_at': todo.created_at
                 } for todo in todos]
 
-    def post_todo_complete(self, token: str, todo_id: int) -> dict:
-        user = self.auth_service.get_user_by_token(token)
-        if user is None:
-            return {"error": "Unauthorized"}
+    @require_auth
+    def post_todo_complete(self, user, todo_id: int) -> dict:
         self.todo_service.complete_todo(user.id, todo_id)
         self.todo_service.db.save_todos()
         return {"success": True}

@@ -35,3 +35,6 @@ if __name__ == "__main__":
     for list_todo in list_dict_todos:
         print({key: value for key, value in list_todo.items()})
 
+    print(api.post_logout(token))
+
+

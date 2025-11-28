@@ -15,6 +15,6 @@ class TodoService:
         todo = TodoItem(
             user_id=user_id,
             title=title,
-            completed=false,
+            completed=False,
             created_at=datetime.today())
         

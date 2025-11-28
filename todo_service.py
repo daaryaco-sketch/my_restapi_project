@@ -1,6 +1,6 @@
 from database import JsonDatabase
 from pathlib import Path
-from models import User, TodoItem
+from models import TodoItem
 from datetime import datetime
 
 class TodoService:

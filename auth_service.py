@@ -8,10 +8,8 @@ class AuthService:
     sessions: dict[str, int]
     _user_counter = 0
 
-    def __init__(self, users_file: Path, todos_file: Path):
-        self.db.users_file = users_file
-        self.db.todos_file = todos_file
-        #self.db.__init__(users_file, todos_file)
+    def __init__(self):
+        pass
 
     def register(self, username: str, password: str) -> User:
         if username in ([user.username for user in self.db.users]):

@@ -9,6 +9,7 @@ class ApiSimulator:
         self.auth_service = auth_service
         self.todo_service = todo_service
 
+    @staticmethod
     def require_auth(func):
         def wrapper(self, token, *args, **kwargs):
             user = self.auth_service.get_user_by_token(token)

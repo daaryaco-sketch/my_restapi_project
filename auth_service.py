@@ -11,9 +11,12 @@ class AuthService:
     def __init__(self, db: JsonDatabase):
         self.db = db
         self.sessions = {}
+        self.db.load_users()
+        max_id = max([user.id for user in self.db.users])
+        _user_counter = max_id
 
     def register(self, username: str, password: str) -> User:
-        if username in ([user.username for user in self.db.users]):
+        if username in [user.username for user in self.db.users]:
             raise ValueError('This username is exists.')
         self._user_counter += 1
         user = User(

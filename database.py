@@ -17,7 +17,7 @@ class JsonDatabase:
 
     def load_users(self) -> None:
         usr_file = Path(self.users_file)
-        if usr_file.exists():
+        if not usr_file.exists():
             raise FileNotFoundError('File does not exists.')
         with open(self.users_file, 'r') as file:
             json_users = json.load(file)
@@ -26,7 +26,7 @@ class JsonDatabase:
                 username = value['username'],
                 password_hash = value['password_hash'],
                 created_at = datetime.fromisoformat(value['created_at'])
-            ) for key, value in json_users.items()]
+            ) for _, value in json_users.items()]
 
     def save_users(self) -> None:
         dict_users = {user.id:{
@@ -40,7 +40,7 @@ class JsonDatabase:
 
     def load_todos(self) -> None:
         todo_file = Path(self.todos_file)
-        if todo_file.exists():
+        if not todo_file.exists():
             raise FileNotFoundError('Path does not exists')
         with open(self.todos_file, 'r') as file:
             dict_todos = json.load(file)
@@ -50,7 +50,7 @@ class JsonDatabase:
                                     title = value['title'],
                                     completed = bool(value['completed']),
                                     created_at = datetime.fromisoformat(value['created_at'])
-            ) for key, value in dict_todos.items()]
+            ) for _, value in dict_todos.items()]
     
     def save_todos(self) -> None:
         dict_todos = {todo.id:{

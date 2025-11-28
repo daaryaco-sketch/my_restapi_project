@@ -11,7 +11,7 @@ class TodoService:
         self.db = db
 
     def create_todo(self, user_id: int, title: str) -> TodoItem:
-        if user_id not in ([user.id for user in self.db.users]):
+        if user_id not in [user.id for user in self.db.users]:
             raise Exception(f"User {user_id} does not exist")
         self._todo_counter += 1
         todo = TodoItem(

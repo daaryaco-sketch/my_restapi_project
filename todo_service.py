@@ -17,4 +17,12 @@ class TodoService:
             title=title,
             completed=False,
             created_at=datetime.today())
-        
+        self.db.todos.append(todo)
+        self.db.save_todos()
+        return todo
+    
+    def list_todos(self, user_id: int, title: str) -> list[TodoItem]:
+        return [todo for todo in self.db.todos if todo.user_id == user_id and todo.title == title]
+    
+    
+    

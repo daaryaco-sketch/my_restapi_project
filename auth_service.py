@@ -1,5 +1,4 @@
 from database import JsonDatabase
-from pathlib import Path
 from models import User, TodoItem
 from datetime import datetime, time
 

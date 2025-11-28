@@ -24,5 +24,11 @@ class TodoService:
     def list_todos(self, user_id: int, title: str) -> list[TodoItem]:
         return [todo for todo in self.db.todos if todo.user_id == user_id and todo.title == title]
     
+    def complete_todo(self, user_id: int, todo_id: int) -> bool:
+        for todo in self.db.todos:
+            if todo.user_id == user_id and todo.id == todo_id:
+                todo.completed = True  # mark task as completed
+                return True
+        return False
     
     

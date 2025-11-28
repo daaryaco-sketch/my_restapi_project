@@ -67,10 +67,8 @@ class ApiSimulator:
         self.todo_service.db.save_todos()
         return {"success": True}
 
-    def post_todo_delete(self, token: str, todo_id: int) -> dict:
-        user = self.auth_service.get_user_by_token(token)
-        if user is None:
-            return {"error": "Unauthorized"}
+    @require_auth
+    def post_todo_delete(self, user, todo_id: int) -> dict:
         self.todo_service.delete_todo(user.id, todo_id)
         self.todo_service.db.save_todos()
         return {"success": True}

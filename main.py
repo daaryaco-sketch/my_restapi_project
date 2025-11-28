@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
         print([todo for todo in api.get_todos(token)])
 
-        api.post_todo_complete(token, 1)
+        api.post_todo_complete(token, 2)
         api.post_todo_delete(token, 1)
 
         print([todo for todo in api.get_todos(token)])
